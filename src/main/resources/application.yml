@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: hello-jprotobuf
+  main:
+    banner-mode: off
+server:
+  port: 9090
