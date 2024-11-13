@@ -1,4 +1,4 @@
-package org.feuyeux.jprotobuf.pojo;
+package org.feuyeux.serialized.pojo;
 
 import com.baidu.bjf.remoting.protobuf.FieldType;
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;

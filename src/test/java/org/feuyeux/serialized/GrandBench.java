@@ -1,4 +1,4 @@
-package org.feuyeux.jprotobuf;
+package org.feuyeux.serialized;
 
 import com.baidu.bjf.remoting.protobuf.Codec;
 import com.baidu.bjf.remoting.protobuf.ProtobufProxy;
@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.fury.Fury;
 import org.apache.fury.config.Language;
-import org.feuyeux.jprotobuf.pojo.Article;
+import org.feuyeux.serialized.pojo.Article;
 import org.junit.jupiter.api.Test;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.runner.Runner;

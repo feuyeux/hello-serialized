@@ -9,7 +9,9 @@
 - [Jackson](https://github.com/FasterXML/jackson) is a multi-purpose Java library for processing JSON data.
 - [Gson](https://github.com/google/gson) is a Java library that can be used to convert Java Objects into their JSON representation.
 
-## GrandBench Results (sorted by Score)
+## GrandBench
+
+```sh
 Benchmark                  Mode  Cnt        Score   Error  Units
 GrandBench.testFury       thrpt        941612.623          ops/s
 GrandBench.testJProtobuf  thrpt        154968.925          ops/s
@@ -17,8 +19,11 @@ GrandBench.testJackson    thrpt         70253.544          ops/s
 GrandBench.testFast2Json  thrpt         59035.498          ops/s
 GrandBench.testFastJson   thrpt         43323.395          ops/s
 GrandBench.testGson       thrpt         20956.183          ops/s
+```
 
-## MoyenBench Results (sorted by Score)
+## MoyenBench
+
+```sh
 Benchmark                  Mode  Cnt       Score   Error  Units
 MoyenBench.testFury       thrpt       972184.230          ops/s
 MoyenBench.testFast2Json  thrpt       288178.631          ops/s
@@ -26,8 +31,11 @@ MoyenBench.testFastJson   thrpt       179185.558          ops/s
 MoyenBench.testJProtobuf  thrpt       135463.377          ops/s
 MoyenBench.testJackson    thrpt        72116.166          ops/s
 MoyenBench.testGson       thrpt        59473.264          ops/s
+```
 
-## PetitBench Results (sorted by Score)
+## PetitBench
+
+```sh
 Benchmark                  Mode  Cnt       Score   Error  Units
 PetitBench.testFury       thrpt       9531667.839          ops/s
 PetitBench.testFast2Json  thrpt       4892763.856          ops/s
@@ -35,3 +43,4 @@ PetitBench.testJProtobuf  thrpt       4051234.408          ops/s
 PetitBench.testFastJson   thrpt       2924807.093          ops/s
 PetitBench.testJackson    thrpt        948208.195          ops/s
 PetitBench.testGson       thrpt        668335.770          ops/s
+```

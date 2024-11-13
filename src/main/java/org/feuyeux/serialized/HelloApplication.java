@@ -1,4 +1,4 @@
-package org.feuyeux.jprotobuf;
+package org.feuyeux.serialized;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

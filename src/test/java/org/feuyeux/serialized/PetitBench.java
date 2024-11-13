@@ -1,4 +1,4 @@
-package org.feuyeux.jprotobuf;
+package org.feuyeux.serialized;
 
 import com.baidu.bjf.remoting.protobuf.Codec;
 import com.baidu.bjf.remoting.protobuf.ProtobufProxy;
@@ -8,9 +8,7 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.fury.Fury;
 import org.apache.fury.config.Language;
-import org.feuyeux.jprotobuf.pojo.Article;
-import org.feuyeux.jprotobuf.pojo.Person;
-import org.feuyeux.jprotobuf.pojo.Persons;
+import org.feuyeux.serialized.pojo.Person;
 import org.junit.jupiter.api.Test;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.runner.Runner;
@@ -18,90 +16,77 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.IntStream;
 
 @State(Scope.Thread)
 @Slf4j
-public class MoyenBench {
-  private Persons persons;
+public class PetitBench {
+  private Person person;
   private ObjectMapper mapper;
   private Gson gson;
-  private Codec<Persons> codec;
+  private Codec<Person> codec;
   private Fury fury;
 
   @Setup
   public void setup() {
-    persons = new Persons();
-    List<Person> list = new ArrayList<>();
-    IntStream.range(0, 20)
-        .forEach(
-            i -> {
-              Person person = new Person();
-              person.setId(Long.valueOf(i));
-              person.setName("TOM");
-              person.setAge(29);
-              list.add(person);
-            });
-    persons.setPersons(list);
+    person = new Person();
+    person.setId(1L);
+    person.setName("TOM");
+    person.setAge(29);
 
     mapper = new ObjectMapper();
     gson = new Gson();
-    codec = ProtobufProxy.create(Persons.class);
+    codec = ProtobufProxy.create(Person.class);
     fury = Fury.builder().withLanguage(Language.JAVA)
             .requireClassRegistration(true)
             .build();
     fury.register(Person.class);
-    fury.register(Persons.class);
   }
 
   @TearDown
   public void tearDown() {
-    persons = null;
+    person = null;
     mapper = null;
     gson = null;
-    codec = null;
   }
 
   @Benchmark
   public void testJProtobuf() throws IOException {
-    byte[] bytes = codec.encode(persons);
-    Persons persons2 = codec.decode(bytes);
-    log.debug("JProtobuf Persons:{}", persons2);
+    byte[] bytes = codec.encode(person);
+    Person person2 = codec.decode(bytes);
+    log.debug("JProtobuf Person:{}", person2);
   }
 
   @Benchmark
   public void testFury() throws IOException {
-    byte[] bytes = fury.serialize(persons);
-    Persons persons2 = (Persons)fury.deserialize(bytes);
-    log.debug("Fury Persons:{}", persons2);
+    byte[] bytes = fury.serialize(person);
+    Person person2 =  (Person)fury.deserialize(bytes);
+    log.debug("Fury Person:{}", person2);
   }
 
   @Benchmark
   public void testFastJson() {
-    String json = com.alibaba.fastjson.JSON.toJSONString(persons);
-    Persons persons2 = com.alibaba.fastjson.JSON.parseObject(json, Persons.class);
-    log.debug("FastJson Persons:{}", persons2);
+    String json = com.alibaba.fastjson.JSON.toJSONString(person);
+    Person person2 = com.alibaba.fastjson.JSON.parseObject(json, Person.class);
+    log.debug("FastJson Person:{}", person2);
   }
 
   @Benchmark
   public void testFast2Json() {
-    String json = com.alibaba.fastjson2.JSON.toJSONString(persons);
-    Persons persons2 = com.alibaba.fastjson2.JSON.parseObject(json, Persons.class);
-    log.debug("Fast2Json Persons:{}", persons2);
+    String json = com.alibaba.fastjson2.JSON.toJSONString(person);
+    Person person2 = com.alibaba.fastjson2.JSON.parseObject(json, Person.class);
+    log.debug("Fast2Json Person:{}", person2);
   }
 
   @Benchmark
   public void testJackson() throws JsonProcessingException {
-    String json = mapper.writeValueAsString(persons);
-    Persons persons2 = mapper.readValue(json, Persons.class);
-    log.debug("Jackson Persons:{}", persons2);
+    String json = mapper.writeValueAsString(person);
+    Person person2 = mapper.readValue(json, Person.class);
+    log.debug("Jackson Person:{}", person2);
   }
 
   @Benchmark
   public void testGson() {
-    String json = gson.toJson(persons);
+    String json = gson.toJson(person);
     Person person2 = gson.fromJson(json, Person.class);
     log.debug("Gson Person:{}", person2);
   }
@@ -110,7 +95,7 @@ public class MoyenBench {
   public void testBenchmark() throws Exception {
     Options options =
         new OptionsBuilder()
-            .include(MoyenBench.class.getSimpleName())
+            .include(PetitBench.class.getSimpleName())
             .forks(1)
             .threads(1)
             .warmupIterations(1)

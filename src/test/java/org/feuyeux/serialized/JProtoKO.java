@@ -1,4 +1,4 @@
-package org.feuyeux.jprotobuf;
+package org.feuyeux.serialized;
 
 import org.junit.jupiter.api.Test;
 import org.openjdk.jmh.annotations.Mode;

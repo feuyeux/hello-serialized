@@ -1,11 +1,11 @@
-package org.feuyeux.jprotobuf;
+package org.feuyeux.serialized;
 
 import com.baidu.bjf.remoting.protobuf.Codec;
 import com.baidu.bjf.remoting.protobuf.ProtobufProxy;
 import java.io.IOException;
 import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
-import org.feuyeux.jprotobuf.pojo.Person;
+import org.feuyeux.serialized.pojo.Person;
 import org.junit.jupiter.api.Test;
 
 @Slf4j
