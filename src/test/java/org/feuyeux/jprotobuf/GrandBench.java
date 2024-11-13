@@ -6,6 +6,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.fury.Fury;
+import org.apache.fury.config.Language;
 import org.feuyeux.jprotobuf.pojo.Article;
 import org.junit.jupiter.api.Test;
 import org.openjdk.jmh.annotations.*;
@@ -25,6 +27,7 @@ public class GrandBench {
   private ObjectMapper mapper;
   private Gson gson;
   private Codec<Article> codec;
+  private Fury fury;
 
   @Setup
   public void setup() throws IOException {
@@ -40,6 +43,10 @@ public class GrandBench {
     mapper = new ObjectMapper();
     gson = new Gson();
     codec = ProtobufProxy.create(Article.class);
+    fury = Fury.builder().withLanguage(Language.JAVA)
+            .requireClassRegistration(true)
+            .build();
+    fury.register(Article.class);
   }
 
   @TearDown
@@ -55,6 +62,13 @@ public class GrandBench {
     byte[] bytes = codec.encode(article);
     Article article2 = codec.decode(bytes);
     log.debug("JProtobuf Article:{}", article2);
+  }
+
+  @Benchmark
+  public void testFury() throws IOException {
+    byte[] bytes = fury.serialize(article);
+    Article article2 = (Article)fury.deserialize(bytes);
+    log.debug("Fury Article:{}", article2);
   }
 
   @Benchmark

@@ -6,6 +6,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.fury.Fury;
+import org.apache.fury.config.Language;
+import org.feuyeux.jprotobuf.pojo.Article;
 import org.feuyeux.jprotobuf.pojo.Person;
 import org.feuyeux.jprotobuf.pojo.Persons;
 import org.junit.jupiter.api.Test;
@@ -26,6 +29,7 @@ public class MoyenBench {
   private ObjectMapper mapper;
   private Gson gson;
   private Codec<Persons> codec;
+  private Fury fury;
 
   @Setup
   public void setup() {
@@ -45,6 +49,11 @@ public class MoyenBench {
     mapper = new ObjectMapper();
     gson = new Gson();
     codec = ProtobufProxy.create(Persons.class);
+    fury = Fury.builder().withLanguage(Language.JAVA)
+            .requireClassRegistration(true)
+            .build();
+    fury.register(Person.class);
+    fury.register(Persons.class);
   }
 
   @TearDown
@@ -60,6 +69,13 @@ public class MoyenBench {
     byte[] bytes = codec.encode(persons);
     Persons persons2 = codec.decode(bytes);
     log.debug("JProtobuf Persons:{}", persons2);
+  }
+
+  @Benchmark
+  public void testFury() throws IOException {
+    byte[] bytes = fury.serialize(persons);
+    Persons persons2 = (Persons)fury.deserialize(bytes);
+    log.debug("Fury Persons:{}", persons2);
   }
 
   @Benchmark
