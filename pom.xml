@@ -84,7 +84,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-            <version>4.0.4</version>
+            <version>4.0.5</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
